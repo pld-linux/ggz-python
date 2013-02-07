@@ -1,0 +1,11 @@
+--- ggz-python-0.0.14.1/Makefile.in.orig	2008-02-16 22:13:50.000000000 +0100
++++ ggz-python-0.0.14.1/Makefile.in	2013-02-06 21:54:01.974943564 +0100
+@@ -122,7 +122,7 @@
+ 
+ po-install:
+ 	@echo Installing internationalization files
+-	cd po && make install prefix=$(DESTDIR)$(prefix)
++	cd po && make install prefix=$(prefix) DESTDIR=$(DESTDIR)
+ 
+ man-install:
+ 	@echo Installing manual pages

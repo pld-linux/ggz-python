@@ -1,0 +1,56 @@
+--- ggz-python-0.0.14.1/configure.ac.orig	2013-02-05 21:21:20.893451952 +0100
++++ ggz-python-0.0.14.1/configure.ac	2013-02-05 21:26:53.023445028 +0100
+@@ -80,8 +80,8 @@
+ 
+ 	if test "x$rsvgprefix" = "x"; then
+ 		rsvgprefix=/usr
+-		rsvg_libraries="$rsvgprefix/lib"
+-		rsvg_includes="$rsvgprefix/include"
++		rsvg_libraries="$(pkg-config --libs librsvg-2.0)"
++		rsvg_includes="$(pkg-config --cflags librsvg-2.0)"
+ 	else
+ 		rsvg_libraries="$rsvgprefix/lib"
+ 		rsvg_includes="$rsvgprefix/include"
+@@ -91,8 +91,8 @@
+ 
+ 	save_cppflags=$CPPFLAGS
+ 	save_ldflags=$LDFLAGS
+-	CPPFLAGS="$CPPFLAGS -I $rsvg_includes"
+-	LDFLAGS="$LDFLAGS -L $rsvg_libraries"
++	CPPFLAGS="$CPPFLAGS $rsvg_includes"
++	LDFLAGS="$LDFLAGS $rsvg_libraries"
+ 
+ 	AC_CHECK_LIB(
+ 		[rsvg-2],
+@@ -102,7 +102,7 @@
+ 	)
+ 	if test "$rsvg_found" = "yes"; then
+ 		AC_CHECK_HEADER(
+-			[librsvg-2/librsvg/librsvg-features.h],
++			[librsvg/rsvg.h],
+ 			[rsvg_found=yes],
+ 			[rsvg_found=no]
+ 		)
+--- ggz-python-0.0.14.1/pyrsvgsdl/setup.py.in.orig	2008-02-16 22:13:50.000000000 +0100
++++ ggz-python-0.0.14.1/pyrsvgsdl/setup.py.in	2013-02-05 21:29:29.770108427 +0100
+@@ -16,13 +16,15 @@
+         Extension('rsvgsdl',
+         ['src/pyrsvgsdl.c'],
+ 		include_dirs = [
+-			'@rsvg_includes@/librsvg-2',
+-			'@rsvg_includes@/gtk-2.0',
+-			'@rsvg_includes@/glib-2.0',
+-			'@rsvg_libraries@/glib-2.0/include'
++			'/usr/include/cairo',
++			'/usr/include/librsvg-2.0',
++			'/usr/include/gdk-pixbuf-2.0',
++			'/usr/include/gtk-2.0',
++			'/usr/include/glib-2.0',
++			'@libdir@/glib-2.0/include'
+ 		],
+         libraries = ['rsvg-2'],
+-        library_dirs = ["@rsvg_libraries@"])
++        library_dirs = ["@libdir@"])
+     ]
+ )
+ 
